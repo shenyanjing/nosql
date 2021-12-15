@@ -19,9 +19,6 @@ class book_data():
         try:
             responce=requests.get(url,headers=self.headers)
             content=responce.content.decode("gbk","ignore")
-            # print(content)
-            # content=responce.content
-            # print("="*30)
             return content
         except Exception as e:
             print("error")
@@ -41,24 +38,16 @@ class book_data():
         div = 1
         while 1:
             book_label=content.xpath("//*[@id='main']/div[{}]/h2//text()".format(div))
-            # print('book_label:{}'.format(book_label))
-            # if div>=5:
-            #     break
             if book_label:
                 li = 1
                 while 1:
                     book_data = {'book_name':'','book_url':'','book_lable':''}
                     book_name=content.xpath('//*[@id="main"]/div[{}]/ul/li[{}]/a//text()'.format(div,li))
-                    # print('book_name:{}'.format(book_name))
-                    # if li>=10:
-                    #     break
                     if book_name:
                         book_url=content.xpath('//*[@id="main"]/div[{}]/ul/li[{}]/a/@href'.format(div,li))
                         book_data['book_name']=book_name[0]
                         book_data['book_url']=book_url[0]
                         book_data['book_lable']=book_label[0][:-4]
-                        # print('book_url:{}'.format(book_url))
-                        
                         # 插入数据库
                         try:
                             #字典插入
@@ -68,7 +57,6 @@ class book_data():
                             print("执行失败")
                             print(e)
                         book_list.append(book_data)
-                        #print(book_data)
                         li = li+1
                     else:
                         break
@@ -76,7 +64,6 @@ class book_data():
             else:
                 break
         myclient.close()
-        # # print(book_list)
         return book_list
 
 a = book_data("伏天氏")
